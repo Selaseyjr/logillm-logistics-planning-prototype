@@ -1,7 +1,5 @@
 # 🚚 LogiLLM Control Tower
 
-# LogiLLM — Logistics Planning Prototype
-
 > **Early learning prototype:** This project was developed during my Data Analytics training to explore how a Large Language Model could be used to generate basic logistics planning suggestions from user-provided shipment information.
 
 🌐 Live Demo: [View Here](https://logillm-logistics-planning-assistant.streamlit.app/)
