@@ -1,14 +1,37 @@
 # 🚚 LogiLLM Control Tower
 
+# LogiLLM — Logistics Planning Prototype
+
+> **Early learning prototype:** This project was developed during my Data Analytics training to explore how a Large Language Model could be used to generate basic logistics planning suggestions from user-provided shipment information.
+
 🌐 Live Demo: [View Here](https://logillm-logistics-planning-assistant.streamlit.app/)
 
 ![Application Image Demo](Prompt.png)
 
-AI-powered logistics planning and shipment decision support platform built with **Python**, **Streamlit**, and **OpenAI**.
+## Why I Built It
 
-## Overview
+At the time of developing this project, I was beginning to explore the relationship between data analytics, artificial intelligence and logistics.
 
-LogiLLM Control Tower helps logistics and supply chain professionals evaluate shipment requirements and generate intelligent transportation recommendations based on business priorities, urgency, cargo characteristics, and operational considerations.
+The project was therefore primarily an experiment in applying an emerging technical skill to a logistics-related context rather than a production-ready logistics decision-support system.
+
+## What the Prototype Does
+
+The application accepts basic shipment information and uses an LLM to generate a proposed logistics plan.
+
+The prototype explores ideas such as:
+
+- Transport-mode selection
+- Shipment considerations
+- Cost and time trade-offs
+- Basic logistics planning recommendations
+
+## What I Learned
+
+The project helped me understand how an LLM-based interface could be connected to a business-oriented use case.
+
+It also exposed an important limitation in my early approach: applying technology to a domain is not the same as understanding the operational problem deeply enough to design an effective solution.
+
+As my understanding of supply chains and logistics develops, I am interested in revisiting this type of idea from a stronger operational and problem-solving perspective.
 
 ## Features
 
