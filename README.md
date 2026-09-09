@@ -1,6 +1,6 @@
 # 🚚 LogiLLM Control Tower
 
-> **Learning prototype:** This project was developed during my Data Analytics training to explore how a Large Language Model could be used to generate basic logistics planning suggestions from user-provided shipment information.
+> **Learning prototype:** An early exploration of how AI can support supply-chain and logistics decision-making by connecting operational data, planning considerations and intelligent recommendations in one workflow.
 
 🌐 Live Demo: [View Here](https://logillm-logistics-planning-assistant.streamlit.app/)
 
@@ -10,7 +10,7 @@
 
 At the time of developing this project, I was beginning to explore the relationship between data analytics, artificial intelligence and logistics.
 
-The project was therefore primarily an experiment in applying an emerging technical skill to a logistics-related context rather than a production-ready logistics decision-support system.
+The project was primarily an experiment in applying an emerging technical skill to a logistics-related context rather than a production-ready logistics decision-support system.
 
 ## What the Prototype Does
 
