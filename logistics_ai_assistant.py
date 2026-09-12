@@ -1,334 +1,796 @@
 import os
-from openai import OpenAI
 import streamlit as st
 from dotenv import load_dotenv
+from openai import OpenAI, AuthenticationError, RateLimitError, APIError
 
-# --------------------------------------------------
-# CONFIG
-# --------------------------------------------------
+
+# ============================================================
+# PAGE CONFIGURATION
+# ============================================================
 
 st.set_page_config(
     page_title="LogiLLM Control Tower",
     page_icon="🚚",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
+
+# ============================================================
+# CUSTOM CSS
+# Only used for general styling — no HTML interface components
+# ============================================================
+
+st.markdown(
+    """
+    <style>
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    header {
+        visibility: hidden;
+    }
+
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 1500px;
+    }
+
+    .main-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+    }
+
+    .main-subtitle {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.15rem;
+        font-weight: 650;
+        margin-top: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .footer-text {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 0.72rem;
+        padding-top: 30px;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ============================================================
+# OPENAI API CONFIGURATION
+# ============================================================
 
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
+api_key = os.getenv("OPENAI_API_KEY")
 
-# --------------------------------------------------
-# CUSTOM STYLING
-# --------------------------------------------------
+# Streamlit Cloud fallback
+if not api_key and "OPENAI_API_KEY" in st.secrets:
+    api_key = st.secrets["OPENAI_API_KEY"]
 
-hide_streamlit_style = """
-<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
+client = None
 
-.block-container{
-    padding-top: 2rem;
-}
+if api_key:
+    client = OpenAI(api_key=api_key)
 
-[data-testid="metric-container"] {
-    border: 1px solid #e6e6e6;
-    padding: 15px;
-    border-radius: 10px;
-}
-</style>
-"""
 
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-# --------------------------------------------------
-# HEADER
-# --------------------------------------------------
-
-st.title("🚚 LogiLLM Control Tower")
-
-st.caption(
-    "AI-Powered Logistics Planning and Shipment Decision Support Platform"
-)
-
-st.markdown("""
-### Supply Chain Decision Intelligence
-
-Optimize transportation planning using AI-driven recommendations
-for mode selection, cost efficiency, risk assessment,
-and sustainability evaluation.
-""")
-
-# --------------------------------------------------
-# KPI DASHBOARD
-# --------------------------------------------------
-
-kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-
-with kpi1:
-    st.metric("Shipments Analyzed", "1,247")
-
-with kpi2:
-    st.metric("Planning Efficiency", "+18%")
-
-with kpi3:
-    st.metric("Average Lead Time", "2.4 Days")
-
-with kpi4:
-    st.metric("Risk Alerts", "23")
-
-st.divider()
-
-# --------------------------------------------------
+# ============================================================
 # SIDEBAR
-# --------------------------------------------------
+# ============================================================
 
-st.sidebar.title("⚙️ Planning Settings")
+with st.sidebar:
 
-temperature = st.sidebar.slider(
-    "AI Creativity",
-    min_value=0.0,
-    max_value=1.5,
-    value=0.3,
-    step=0.1
-)
+    st.title("🚚 LogiLLM")
 
-st.sidebar.markdown("---")
+    st.caption("CONTROL TOWER")
 
-st.sidebar.subheader("About")
+    st.divider()
 
-st.sidebar.info(
-    """
-    LogiLLM Control Tower provides:
+    navigation = st.radio(
+        "Navigation",
+        [
+            "Overview",
+            "Shipment Planning",
+            "Risk & Exceptions",
+            "Sustainability",
+            "AI Decision Support"
+        ]
+    )
 
-    • Transport mode recommendations
+    st.divider()
 
-    • Cost-speed tradeoff analysis
+    st.caption("OPERATIONS")
 
-    • Shipment risk assessment
+    st.write("Global logistics visibility")
+    st.write("Decision support")
+    st.write("Exception monitoring")
 
-    • Sustainability insights
 
-    • Executive logistics summaries
-    """
-)
+# ============================================================
+# MAIN HEADER
+# ============================================================
 
-# --------------------------------------------------
-# TABS
-# --------------------------------------------------
+header_col1, header_col2 = st.columns([5, 1])
 
-tab1, tab2, tab3 = st.tabs(
-    [
-        "Shipment Planning",
-        "Risk Analysis",
-        "Sustainability"
-    ]
-)
+with header_col1:
 
-# --------------------------------------------------
-# TAB 1
-# --------------------------------------------------
+    st.markdown(
+        '<div class="main-title">LogiLLM Control Tower</div>',
+        unsafe_allow_html=True
+    )
 
-with tab1:
+    st.markdown(
+        '<div class="main-subtitle">'
+        'Logistics planning, operational visibility and decision support'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
-    st.subheader("Shipment Information")
+with header_col2:
 
-    col1, col2 = st.columns(2)
+    st.success("CONTROL TOWER ONLINE")
+
+
+# ============================================================
+# OVERVIEW
+# ============================================================
+
+if navigation == "Overview":
+
+    st.markdown(
+        '<div class="section-title">Network Overview</div>',
+        unsafe_allow_html=True
+    )
+
+    # --------------------------------------------------------
+    # KPI CARDS
+    # --------------------------------------------------------
+
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
+        st.metric(
+            "Active Shipments",
+            "128",
+            "8.4%"
+        )
+
+    with col2:
+        st.metric(
+            "On-Time Delivery",
+            "94.2%",
+            "1.8%"
+        )
+
+    with col3:
+        st.metric(
+            "Avg. Lead Time",
+            "2.4d",
+            "-0.3d"
+        )
+
+    with col4:
+        st.metric(
+            "At-Risk Shipments",
+            "11",
+            "Requires attention"
+        )
+
+    with col5:
+        st.metric(
+            "Open Exceptions",
+            "7",
+            "3 high priority"
+        )
+
+
+    # --------------------------------------------------------
+    # RECENT SHIPMENT ACTIVITY
+    # --------------------------------------------------------
+
+    st.markdown(
+        '<div class="section-title">Recent Shipment Activity</div>',
+        unsafe_allow_html=True
+    )
+
+    activities = [
+        {
+            "id": "SHP-10482",
+            "route": "Frankfurt → Accra",
+            "status": "In Transit · On Schedule",
+            "type": "success"
+        },
+        {
+            "id": "SHP-10479",
+            "route": "Shanghai → Hamburg",
+            "status": "Delivery Risk",
+            "type": "warning"
+        },
+        {
+            "id": "SHP-10476",
+            "route": "Amsterdam → Frankfurt",
+            "status": "Delivered",
+            "type": "success"
+        },
+        {
+            "id": "SHP-10471",
+            "route": "Dubai → Accra",
+            "status": "Exception",
+            "type": "error"
+        },
+        {
+            "id": "SHP-10469",
+            "route": "Rotterdam → Kumasi",
+            "status": "In Transit",
+            "type": "success"
+        }
+    ]
+
+    for activity in activities:
+
+        with st.container(border=True):
+
+            col1, col2, col3 = st.columns([1, 3, 2])
+
+            with col1:
+                st.write(f"**{activity['id']}**")
+
+            with col2:
+                st.write(activity["route"])
+
+            with col3:
+
+                if activity["type"] == "success":
+                    st.success(activity["status"])
+
+                elif activity["type"] == "warning":
+                    st.warning(activity["status"])
+
+                else:
+                    st.error(activity["status"])
+
+
+    # --------------------------------------------------------
+    # NETWORK PERFORMANCE
+    # --------------------------------------------------------
+
+    st.markdown(
+        '<div class="section-title">Network Performance</div>',
+        unsafe_allow_html=True
+    )
+
+    performance_col1, performance_col2 = st.columns([1.5, 1])
+
+    with performance_col1:
+
+        with st.container(border=True):
+
+            st.write("### Transport Utilisation")
+
+            st.write("Air Freight — 78%")
+            st.progress(0.78)
+
+            st.write("Ocean Freight — 64%")
+            st.progress(0.64)
+
+            st.write("Road Freight — 86%")
+            st.progress(0.86)
+
+            st.write("Rail Freight — 52%")
+            st.progress(0.52)
+
+
+    # --------------------------------------------------------
+    # OPERATIONAL PULSE
+    # --------------------------------------------------------
+
+    with performance_col2:
+
+        with st.container(border=True):
+
+            st.write("### Operational Pulse")
+
+            st.caption("NETWORK INSIGHT")
+
+            st.write(
+                "Overall network performance remains stable. "
+                "The primary concentration of operational risk is "
+                "currently within Asia–Europe ocean lanes and selected "
+                "Africa-bound shipments."
+            )
+
+            st.warning(
+                "Priority: monitor delayed departures and upcoming "
+                "delivery-window breaches."
+            )
+
+
+# ============================================================
+# SHIPMENT PLANNING
+# ============================================================
+
+elif navigation == "Shipment Planning":
+
+    st.markdown(
+        '<div class="section-title">Shipment Planning</div>',
+        unsafe_allow_html=True
+    )
+
+    st.write(
+        "Configure shipment parameters to generate a logistics recommendation."
+    )
+
+    planning_col1, planning_col2 = st.columns(2)
+
+    with planning_col1:
 
         origin = st.text_input(
-            "Origin Location",
-            placeholder="Frankfurt"
+            "Origin",
+            placeholder="e.g. Frankfurt"
         )
 
         destination = st.text_input(
-            "Destination Location",
-            placeholder="Hamburg"
+            "Destination",
+            placeholder="e.g. Accra"
         )
 
         cargo_type = st.selectbox(
             "Cargo Type",
             [
+                "General Cargo",
                 "Electronics",
-                "Medical Supplies",
-                "Food Products",
-                "Industrial Equipment",
-                "Consumer Goods"
+                "Pharmaceuticals",
+                "Automotive Parts",
+                "Food & Perishables",
+                "Industrial Equipment"
             ]
+        )
+
+        weight = st.number_input(
+            "Cargo Weight (kg)",
+            min_value=1.0,
+            value=1000.0
         )
 
         cargo_value = st.number_input(
             "Cargo Value (€)",
-            min_value=1000,
-            value=50000,
-            step=1000
+            min_value=0.0,
+            value=10000.0
         )
 
-    with col2:
-
-        weight = st.number_input(
-            "Shipment Weight (kg)",
-            min_value=1,
-            value=100
-        )
+    with planning_col2:
 
         urgency = st.selectbox(
-            "Delivery Urgency",
+            "Urgency",
             [
-                "Low",
-                "Medium",
-                "High"
+                "Standard",
+                "High",
+                "Critical"
+            ]
+        )
+
+        business_priority = st.selectbox(
+            "Business Priority",
+            [
+                "Cost Optimisation",
+                "Balanced",
+                "Speed / Service"
             ]
         )
 
         delivery_window = st.selectbox(
-            "Required Delivery Window",
+            "Delivery Window",
             [
-                "24 Hours",
-                "48 Hours",
-                "3-5 Days",
-                "Flexible"
+                "Flexible",
+                "Within 7 days",
+                "Within 3 days",
+                "Within 24 hours"
             ]
         )
 
-        budget = st.selectbox(
-            "Business Priority",
+        preferred_mode = st.selectbox(
+            "Preferred Transport Mode",
             [
-                "Lowest Cost",
-                "Balanced",
-                "Fastest Delivery"
+                "No Preference",
+                "Air",
+                "Ocean",
+                "Road",
+                "Rail"
             ]
         )
 
     st.divider()
 
-    if st.button("Generate Logistics Plan"):
+    generate = st.button(
+        "Generate Logistics Recommendation",
+        type="primary",
+        use_container_width=True
+    )
 
-        prompt = f"""
-You are a senior logistics and supply chain consultant.
+    if generate:
 
-Analyze this shipment:
+        if not origin or not destination:
+
+            st.warning(
+                "Please enter both an origin and destination."
+            )
+
+        elif client is None:
+
+            st.error(
+                "The AI service is not configured. "
+                "Please check the application's API configuration."
+            )
+
+        else:
+
+            prompt = f"""
+You are a professional logistics planning analyst.
+
+Analyse the following shipment:
 
 Origin: {origin}
 Destination: {destination}
-Cargo Type: {cargo_type}
-Cargo Value: €{cargo_value}
+Cargo type: {cargo_type}
 Weight: {weight} kg
+Cargo value: €{cargo_value}
 Urgency: {urgency}
-Delivery Window: {delivery_window}
-Business Priority: {budget}
+Business priority: {business_priority}
+Delivery window: {delivery_window}
+Preferred mode: {preferred_mode}
 
 Provide:
 
-# Recommended Transport Mode
+1. Recommended transport mode
+2. Reasoning
+3. Cost considerations
+4. Speed considerations
+5. Operational risks
+6. Sustainability considerations
+7. Recommended action
 
-# Justification
-
-# Cost Considerations
-
-# Speed Considerations
-
-# Operational Risks
-
-# Sustainability Considerations
-
-# Executive Summary
-
-Use professional business language.
+Keep the response concise and suitable for a logistics manager.
 """
 
-        with st.spinner("Generating logistics recommendation..."):
+            try:
 
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                temperature=temperature,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are an expert logistics consultant with 20 years of supply chain experience."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
-            )
+                with st.spinner(
+                    "Analysing shipment and evaluating logistics options..."
+                ):
 
-            result = response.choices[0].message.content
+                    response = client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        messages=[
+                            {
+                                "role": "system",
+                                "content": (
+                                    "You are an experienced logistics "
+                                    "and supply chain planning analyst."
+                                )
+                            },
+                            {
+                                "role": "user",
+                                "content": prompt
+                            }
+                        ],
+                        temperature=0.3
+                    )
 
-        st.success("Recommendation Generated Successfully")
+                result = response.choices[0].message.content
 
-        st.subheader("Shipment Profile")
+                st.success("Recommendation generated")
 
-        m1, m2, m3 = st.columns(3)
+                st.markdown("### Logistics Recommendation")
 
-        with m1:
-            st.metric("Weight", f"{weight} kg")
+                st.write(result)
 
-        with m2:
-            st.metric("Cargo Value", f"€{cargo_value:,.0f}")
+            except AuthenticationError:
 
-        with m3:
-            st.metric("Urgency", urgency)
+                st.error(
+                    "The logistics recommendation service could not "
+                    "authenticate with the AI provider. Please check "
+                    "the application's API configuration."
+                )
 
-        st.divider()
+            except RateLimitError:
 
-        st.subheader("AI Recommendation")
+                st.warning(
+                    "The AI service is temporarily unavailable because "
+                    "the API usage limit has been reached."
+                )
 
-        st.markdown(result)
+            except APIError:
 
-# --------------------------------------------------
-# TAB 2
-# --------------------------------------------------
+                st.error(
+                    "The AI logistics service returned an API error. "
+                    "Please try again later."
+                )
 
-with tab2:
+            except Exception as e:
 
-    st.subheader("Operational Risk Indicator")
+                st.error(
+                    f"An unexpected error occurred: {e}"
+                )
 
-    if urgency == "High":
-        risk_score = 80
-    elif urgency == "Medium":
-        risk_score = 55
-    else:
-        risk_score = 25
 
-    st.progress(risk_score)
+# ============================================================
+# RISK & EXCEPTIONS
+# ============================================================
+
+elif navigation == "Risk & Exceptions":
 
     st.markdown(
-        f"### Estimated Operational Risk Score: {risk_score}/100"
+        '<div class="section-title">Risk & Exceptions</div>',
+        unsafe_allow_html=True
     )
 
-    st.info(
-        """
-        This score is based on urgency level and shipment
-        complexity. Higher values indicate increased planning
-        and execution risk.
-        """
+    st.write(
+        "Illustrative operational exceptions requiring monitoring "
+        "or intervention."
     )
 
-# --------------------------------------------------
-# TAB 3
-# --------------------------------------------------
+    risks = [
+        (
+            "SHP-10479",
+            "Shanghai → Hamburg",
+            "Port congestion",
+            "Medium"
+        ),
+        (
+            "SHP-10471",
+            "Dubai → Accra",
+            "Documentation exception",
+            "High"
+        ),
+        (
+            "SHP-10465",
+            "Singapore → Frankfurt",
+            "Weather disruption",
+            "Medium"
+        ),
+        (
+            "SHP-10458",
+            "Accra → Amsterdam",
+            "Capacity constraint",
+            "High"
+        )
+    ]
 
-with tab3:
+    for shipment_id, route, issue, level in risks:
 
-    st.subheader("Sustainability Guidance")
+        with st.container(border=True):
 
-    st.success(
-        """
-        Rail and sea freight generally produce lower carbon
-        emissions than air freight.
+            col1, col2, col3 = st.columns([1, 3, 1])
 
-        Consider balancing delivery speed with environmental
-        impact where possible.
-        """
+            with col1:
+                st.write(f"**{shipment_id}**")
+
+            with col2:
+                st.write(f"{route} · {issue}")
+
+            with col3:
+
+                if level == "High":
+                    st.error(level)
+
+                else:
+                    st.warning(level)
+
+
+    st.markdown(
+        '<div class="section-title">Exception Priorities</div>',
+        unsafe_allow_html=True
     )
 
-    st.metric(
-        "Estimated Sustainability Rating",
-        "B+"
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            "High Priority",
+            "3",
+            "Requires intervention"
+        )
+
+    with col2:
+        st.metric(
+            "Medium Priority",
+            "4",
+            "Monitor closely"
+        )
+
+    with col3:
+        st.metric(
+            "Resolved Today",
+            "6",
+            "12%"
+        )
+
+
+# ============================================================
+# SUSTAINABILITY
+# ============================================================
+
+elif navigation == "Sustainability":
+
+    st.markdown(
+        '<div class="section-title">Sustainability Overview</div>',
+        unsafe_allow_html=True
     )
 
+    st.write(
+        "Illustrative sustainability indicators for the logistics network."
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric(
+            "Estimated CO₂ / Shipment",
+            "186 kg",
+            "-8.4%"
+        )
+
+    with col2:
+        st.metric(
+            "Lower-Emission Modes",
+            "42%",
+            "6.2%"
+        )
+
+    with col3:
+        st.metric(
+            "Route Efficiency",
+            "91%",
+            "3.1%"
+        )
+
+    with col4:
+        st.metric(
+            "Consolidated Loads",
+            "68%",
+            "9.5%"
+        )
+
+    st.markdown(
+        '<div class="section-title">Sustainability Priorities</div>',
+        unsafe_allow_html=True
+    )
+
+    with st.container(border=True):
+
+        st.caption("NETWORK DIRECTION")
+
+        st.write(
+            "Increase shipment consolidation, improve route utilisation, "
+            "and selectively shift suitable freight toward lower-emission "
+            "transport modes without compromising critical delivery "
+            "requirements."
+        )
+
+
+# ============================================================
+# AI DECISION SUPPORT
+# ============================================================
+
+elif navigation == "AI Decision Support":
+
+    st.markdown(
+        '<div class="section-title">AI Decision Support</div>',
+        unsafe_allow_html=True
+    )
+
+    st.write(
+        "Decision-support layer designed to assist logistics planners "
+        "with shipment-level recommendations."
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        with st.container(border=True):
+
+            st.caption("PLANNING")
+
+            st.metric(
+                "Shipments Monitored",
+                "128"
+            )
+
+    with col2:
+
+        with st.container(border=True):
+
+            st.caption("RISK")
+
+            st.metric(
+                "Shipments Requiring Attention",
+                "11"
+            )
+
+    with col3:
+
+        with st.container(border=True):
+
+            st.caption("EXCEPTIONS")
+
+            st.metric(
+                "Active Operational Issues",
+                "7"
+            )
+
+
+    st.markdown(
+        '<div class="section-title">Decision Workflow</div>',
+        unsafe_allow_html=True
+    )
+
+    workflow = [
+        ("01", "Shipment Data", "Input"),
+        ("02", "Operational Analysis", "Processing"),
+        ("03", "Risk Assessment", "Evaluation"),
+        ("04", "Recommendation", "Decision Support"),
+        ("05", "Human Decision", "Execution")
+    ]
+
+    for number, stage, description in workflow:
+
+        with st.container(border=True):
+
+            col1, col2, col3 = st.columns([0.5, 3, 1])
+
+            with col1:
+                st.write(f"**{number}**")
+
+            with col2:
+                st.write(f"**{stage}**")
+
+            with col3:
+                st.caption(description)
+
+
+    st.markdown(
+        '<div class="section-title">Design Principle</div>',
+        unsafe_allow_html=True
+    )
+
+    with st.container(border=True):
+
+        st.write(
+            "LogiLLM is designed as a decision-support layer rather "
+            "than a replacement for human logistics planners. "
+            "Recommendations should be reviewed against operational "
+            "constraints before execution."
+        )
+
+
+# ============================================================
+# FOOTER
+# ============================================================
+
+st.markdown(
+    '<div class="footer-text">'
+    'LogiLLM Control Tower · Logistics Decision Support Prototype<br>'
+    'Illustrative analytics for demonstration purposes'
+    '</div>',
+    unsafe_allow_html=True
+)
