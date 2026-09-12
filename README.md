@@ -2,7 +2,7 @@
 
 > **Learning prototype:** An early exploration of how AI can support supply-chain and logistics decision-making by connecting operational data, planning considerations and intelligent recommendations in one workflow.
 
-🌐 Live Demo: [View Here](https://logillm-logistics-planning-assistant.streamlit.app/)
+🌐 Live Demo: [View Here](https://logillm-logistics-planning-prototype.streamlit.app/)
 
 ![Application Image Demo](Prompt.png)
 
