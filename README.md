@@ -1,104 +1,91 @@
-# 🚚 LogiLLM Control Tower
+# LogiLLM Control Tower
 
-> **Learning prototype:** An early exploration of how AI can support supply-chain and logistics decision-making by connecting operational data, planning considerations and intelligent recommendations in one workflow.
+> **A supply-chain decision-support prototype exploring how modern web interfaces can present logistics planning, risk analysis, sustainability insights, and AI-assisted recommendations.**
 
-🌐 Live Demo: [View Here](https://logillm-logistics-planning-prototype.streamlit.app/)
+**Live Demo:** https://logillm-logistics-planning.vercel.app/
 
-![Application Image Demo](Prompt.png)
+---
 
-## Why I Built It
+## Overview
 
-At the time of developing this project, I was beginning to explore the relationship between data analytics, artificial intelligence and logistics.
+LogiLLM began as an experiment in applying AI to logistics decision-making. This version was rebuilt as a modern web application to explore how a professional supply-chain decision-support interface could be designed and experienced.
 
-The project was primarily an experiment in applying an emerging technical skill to a logistics-related context rather than a production-ready logistics decision-support system.
+The current application uses **illustrative data and local recommendation logic**. It does not connect to live operational systems or provide autonomous AI decision-making.
 
-## What the Prototype Does
+## What You Can Explore
 
-The application accepts basic shipment information and uses an LLM to generate a proposed logistics plan.
+**Shipment Planning**  
+Enter shipment requirements and review a suggested logistics plan.
 
-The prototype explores ideas such as:
+**Risk & Exceptions**  
+Explore potential operational risks and exception scenarios.
 
-- Transport-mode selection
-- Shipment considerations
-- Cost and time trade-offs
-- Basic logistics planning recommendations
+**Sustainability**  
+Review illustrative sustainability considerations associated with logistics decisions.
 
-## What I Learned
+**AI Decision Support**  
+Explore how AI-assisted recommendations could be incorporated into a logistics planning workflow.
 
-The project helped me understand how an LLM-based interface could be connected to a business-oriented use case.
+**Control Tower Overview**  
+View an executive-style overview of operational indicators and planning information.
 
-It also exposed an important limitation in my early approach: applying technology to a domain is not the same as understanding the operational problem deeply enough to design an effective solution.
+## What I Tested
 
-As my understanding of supply chains and logistics develops, I am interested in revisiting this type of idea from a stronger operational and problem-solving perspective.
+The main objective of this iteration was to explore:
 
-## Features
+> **How can modern frontend technology improve the way a supply-chain decision-support concept is presented and experienced by users?**
 
-- 🚛 Transport mode recommendations (Road, Rail, Air, Sea)
-- 💰 Cost vs. speed trade-off analysis
-- ⚠️ Shipment risk assessment
-- 🌱 Sustainability insights
-- 📊 Executive logistics summaries
-- 🤖 AI-powered decision support
+The application was rebuilt from the earlier Streamlit interface using a component-based web architecture.
 
-## Tech Stack
+The project also reinforced an important principle in AI-enabled systems: **technology alone is not enough. Effective solutions require an understanding of the underlying business process, operational context, decision logic, and user workflow.**
 
-- Python
-- Streamlit
-- OpenAI API
-- python-dotenv
+## Technology Stack
 
-### AI Recommendation Output
+### Application
 
-![AI Recommendation](Response.png)
+<p>
+  <span style="background:#0F3B66;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Next.js</span>
+  <span style="background:#155E8A;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">React</span>
+  <span style="background:#2563A6;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">TypeScript</span>
+</p>
 
-## Run Locally
+### UI & Interaction
 
-Install dependencies:
+<p>
+  <span style="background:#0369A1;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Tailwind CSS</span>
+  <span style="background:#1D4ED8;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Motion</span>
+  <span style="background:#3B82C4;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Lucide Icons</span>
+</p>
 
-```bash
-pip install -r requirements.txt
-```
+### Deployment
 
-Create a `.env` file:
+<p>
+  <span style="background:#1E40AF;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Vercel</span>
+</p>
 
-```env
-OPENAI_API_KEY=your_api_key_here
-```
+## Current Scope
 
-Start the application:
+This version is intentionally limited to the **interface and decision-support experience**.
 
-```bash
-streamlit run logistics_ai_assistant.py
-```
+It does not currently include:
 
-## Current Version
+- Live operational data
+- Database integration
+- Authentication
+- External logistics-system integration
+- Autonomous AI agents
+- Production decision execution
 
-**MVP (Minimum Viable Product)**
+These limitations are intentional. The project provides a foundation for exploring deeper workflow automation, data integration, business rules, and human-in-the-loop AI decision support in future iterations.
 
-The current release focuses on AI-assisted shipment planning, transportation mode recommendations, operational risk assessment, and sustainability guidance.
+## Direction
 
-## Roadmap
+LogiLLM is part of my broader exploration of **digital supply-chain systems, workflow automation, enterprise technology, and AI-assisted operations**.
 
-### Version 2
-- Shipment database integration (SQLite)
-- Order creation and management
-- Shipment status tracking
-- Historical shipment records
-
-### Version 3
-- Logistics KPI dashboards
-- CSV shipment uploads
-- Delay prediction models
-- AI-powered supply chain analytics
-- Business intelligence reporting
-
-## Business Value
-
-This project demonstrates how Large Language Models (LLMs) can support logistics planning and transportation decision-making by providing fast, data-driven recommendations for supply chain operations.
+Future development can extend the prototype from an interface experiment toward a more complete decision-support workflow involving operational data, business rules, AI reasoning, system integration, and controlled human approval.
 
 ## Author
 
 **Selasey Dick Junior Gbeddy**
 
-Supply Chain Analytics | Logistics Technology | AI Applications in Operations
-
+Digital Supply Chain Planning · SAP/ERP · Workflow Automation · AI Applications
