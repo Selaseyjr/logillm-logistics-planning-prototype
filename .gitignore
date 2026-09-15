@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment / secrets
+.env
+.streamlit/secrets.toml
+
+# Freebuff
+.freebuff/
+
+# Next.js
+web/node_modules/
+web/.next/
+web/.toolchain/
+web/*.tsbuildinfo
+web/dev-server.log

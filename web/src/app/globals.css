@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-surface: #f5f6f8;
+  --color-sidebar: #0a0f1c;
+  --color-sidebar-panel: #101827;
+
+  --shadow-card:
+    0 1px 2px 0 rgb(15 23 42 / 0.04),
+    0 1px 3px 0 rgb(15 23 42 / 0.05);
+  --shadow-card-hover:
+    0 2px 4px -1px rgb(15 23 42 / 0.05),
+    0 12px 24px -6px rgb(15 23 42 / 0.1);
+  --shadow-pop:
+    0 8px 30px -6px rgb(15 23 42 / 0.16),
+    0 2px 8px -2px rgb(15 23 42 / 0.08);
+}
+
+body {
+  @apply bg-surface text-slate-900 antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection {
+  @apply bg-blue-600/15;
+}
+
+/* Subtle, professional scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184 / 0.4) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(148 163 184 / 0.35);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(148 163 184 / 0.55);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
