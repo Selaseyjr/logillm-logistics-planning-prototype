@@ -43,25 +43,19 @@ The project also reinforced an important principle in AI-enabled systems: **tech
 
 ### Application
 
-<p>
-  <span style="background:#0F3B66;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Next.js</span>
-  <span style="background:#155E8A;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">React</span>
-  <span style="background:#2563A6;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">TypeScript</span>
-</p>
+![Next.js](https://img.shields.io/badge/Next.js-0F3B66?style=flat-square&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-155E8A?style=flat-square&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-2563A6?style=flat-square&logo=typescript&logoColor=white)
 
 ### UI & Interaction
 
-<p>
-  <span style="background:#0369A1;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Tailwind CSS</span>
-  <span style="background:#1D4ED8;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Motion</span>
-  <span style="background:#3B82C4;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Lucide Icons</span>
-</p>
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-0369A1?style=flat-square&logo=tailwindcss&logoColor=white)
+![Motion](https://img.shields.io/badge/Motion-1D4ED8?style=flat-square&logo=framer&logoColor=white)
+![Lucide](https://img.shields.io/badge/Lucide-3B82C4?style=flat-square&logo=lucide&logoColor=white)
 
 ### Deployment
 
-<p>
-  <span style="background:#1E40AF;color:#FFFFFF;padding:6px 12px;border-radius:6px;margin-right:6px;">Vercel</span>
-</p>
+![Vercel](https://img.shields.io/badge/Vercel-1E40AF?style=flat-square&logo=vercel&logoColor=white)
 
 ## Current Scope
 
